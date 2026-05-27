@@ -212,6 +212,13 @@ export function PrintPreview({ selectedRecords, onClose }: PrintPreviewProps) {
                         </span>
                       )}
                     </div>
+
+                    {includeAnswers && record.originalAnalysis && (
+                      <div className="mt-2.5 pl-3 border-l-2 border-amber-400 text-xs text-slate-700 leading-relaxed font-serif">
+                        <span className="font-bold text-amber-900 bg-amber-50 px-1 rounded mr-1">原母题深度解析:</span>
+                        <MathText text={record.originalAnalysis} />
+                      </div>
+                    )}
                   </div>
                 )}
 

@@ -59,8 +59,9 @@ app.post("/api/analyze-image", async (req, res) => {
 2. 如题中有明显的 A、B、C、D 等选项，请把选项分别单独提取并存入“originalOptions”数组。如果没有选项，原题属于填空题、作答题、计算题等，则“originalOptions”请填空数组。
 3. 自动给出此题的『标准正确答案』以及推算结论。
 4. 敏锐识别或推断图像上学生手写的、留白勾选的『学生原答案』或历史解题笔迹。如果没有，则填空字符串。
-5. 针对这个错题归属的基础考点，提炼出一个高大上且学科专业的、不超过12字的核心知识点名称（如“一元二次方程根的判别式”、“现在完成时”、“动量守恒定理与弹簧碰撞”等）。
-6. 精炼出一个极简生动的标题（15字以内，如“分式解法易漏判别”）。
+5. 提供该错题的『详细深度解析』（存入“originalAnalysis”）。必须详尽列出解题推导步骤、考察常识、考点难点、易错陷阱透析等，让学生一看就能完全掌握学透。公式和计算必须使用 LaTeX $包裹。
+6. 针对这个错题归属的基础考点，提炼出一个高大上且学科专业的、不超过12字的核心知识点名称（如“一元二次方程根的判别式”、“现在完成时”、“动量守恒定理与弹簧碰撞”等）。
+7. 精炼出一个极简生动的标题（15字以内，如“分式解法易漏判别”）。
 
 请务必强制以 JSON 格式输出，务必满足提供的 responseSchema。不要在外面套 markdown 包裹字。`,
     };
@@ -77,9 +78,10 @@ app.post("/api/analyze-image", async (req, res) => {
         },
         originalCorrectAnswer: { type: Type.STRING, description: "该题标准的唯一正确答案，或者包含解答步骤缩影" },
         originalStudentAnswer: { type: Type.STRING, description: "识别原题上手写或明显的涂抹写下的原答案痕迹，无法判断时返回空字符串" },
+        originalAnalysis: { type: Type.STRING, description: "该原错题详细的本源生动推导解析与名师易错点拨（不少于60字），公式请用LaTeX $包裹。" },
         knowledgePoint: { type: Type.STRING, description: "该错题最为核心的一个标准学科具体考点（不超过12字）" }
       },
-      required: ["title", "originalText", "knowledgePoint"]
+      required: ["title", "originalText", "knowledgePoint", "originalAnalysis"]
     };
 
     const response = await aiClient.models.generateContent({

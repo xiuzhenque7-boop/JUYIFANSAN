@@ -17,6 +17,7 @@ export interface SampleQuestion {
   originalOptions: string[];
   originalCorrectAnswer: string;
   originalStudentAnswer: string;
+  originalAnalysis: string; // 错题详细生动解析
   previewColor: string;
   simulatedImage: string; // Base64 or illustrative SVG placeholder
 }
@@ -38,6 +39,7 @@ export const EXAM_SAMPLES: SampleQuestion[] = [
     ],
     originalCorrectAnswer: 'B',
     originalStudentAnswer: 'A (漏掉了关于二次项系数 $k-1 \\neq 0$ 的限定条件)',
+    originalAnalysis: '本题属于典型的最高项系数含参的方程，极其容易忽略二次项最高项的系数不能等于0，即 $k-1 \\neq 0 \\implies k \\neq 1$。学生在求解判别式 $\\Delta = (-2)^2 - 4(k-1) > 0 \\implies 4 - 4k + 4 > 0 \\implies 8 - 4k > 0 \\implies k < 2$ 后，如果直接得出 $k < 2$，就掉入了认知陷阱中。因此，在最高次系数含字母时，务必先分情况讨论或加上非零限定条件，正确取值范围应为 $k < 2$ 且 $k \\neq 1$。',
     previewColor: 'bg-emerald-50 border-emerald-200 text-emerald-950',
     simulatedImage: 'M10 20 L40 80 L70 50 L120 150 L180 30'
   },
@@ -57,6 +59,7 @@ export const EXAM_SAMPLES: SampleQuestion[] = [
     ],
     originalCorrectAnswer: 'B',
     originalStudentAnswer: 'A (看到 year 2018 以为是一般过去时，忽略了 since 引导的时间状语表示动作一直延续到现在)',
+    originalAnalysis: '本题考察的是现在完成时（Present Perfect Tense）与一般过去时（Simple Past Tense）的区别。句中出现了由 since 引导的时间状语 “since the year 2018”，表示动作从2018年开始一直延续并影响到现在。 took place 是一般过去时，用来表示动作发生在过去某一具体时间（不强调与现在的联系）；have taken place 是现在完成时，表示过去发生并持续到现在的变迁。因此最佳答案为 B。常错在误认为 year 2018 是过去时间而直接选 A，未注意 since 这一关键连词。',
     previewColor: 'bg-indigo-50 border-indigo-200 text-indigo-950',
     simulatedImage: 'M20 120 C 50 20, 100 150, 180 80'
   },
@@ -71,6 +74,7 @@ export const EXAM_SAMPLES: SampleQuestion[] = [
     originalOptions: [],
     originalCorrectAnswer: '4V (定值电阻与变阻器串联分压，当 $R_2 = 20\\Omega$ 达最大阻值时，其分得电压最大。由等压比 $U_2 = \\frac{R_2}{R_1 + R_2} \\times U = \\frac{20}{10+20} \\times 6 = 4V$)',
     originalStudentAnswer: '6V (学生误认为滑动变阻器能够分走电源所有的电压，未考虑串联闭合回路中定值电阻的总分压限制)',
+    originalAnalysis: '本题考察的是串联电路中的分压规律及滑动变阻器电压分析。在串联电路中，各用电器所分得的电压与其阻值成正比，即 $\\frac{U_2}{U_1} = \\frac{R_2}{R_1}$。由于定值电阻 $R_1 = 10\\Omega$ 与滑动变阻器 $R_2$ 串联，所以滑动变阻器两端的电压 $U_2 = \\frac{R_2}{R_1 + R_2} \\times U$。当滑动变阻器的阻值为0时（滑片在最左端），其分得电压为0；当滑动变阻器阻值达到最大值 $20\\Omega$ 时（滑片在最右端），其分得的电压最大。分压计算为 $U_2 = \\frac{20}{10 + 20} \\times 6V = 4V$。学生易错在凭感觉认为滑动变阻器可以把电源的电压 $6V$ 全部占去，而忽视了电路中一直存在串联分压的定值电阻。',
     previewColor: 'bg-purple-50 border-purple-200 text-purple-950',
     simulatedImage: 'M50 100 H80 L90 85 L100 115 L110 85 L120 115 L130 100 H160'
   }

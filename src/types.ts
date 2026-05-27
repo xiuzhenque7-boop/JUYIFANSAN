@@ -19,6 +19,7 @@ export interface MistakeRecord {
   originalOptions?: string[];
   originalCorrectAnswer?: string;
   originalStudentAnswer?: string;
+  originalAnalysis?: string; // 错题详细深度解析
   knowledgePoint: string;
   variants: VariantQuestion[];
   createdAt: string;

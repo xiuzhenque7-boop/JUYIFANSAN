@@ -54,6 +54,7 @@ export default function App() {
   const [editOptions, setEditOptions] = useState<string[]>([]);
   const [editCorrectAnswer, setEditCorrectAnswer] = useState<string>("");
   const [editStudentAnswer, setEditStudentAnswer] = useState<string>("");
+  const [editAnalysis, setEditAnalysis] = useState<string>("");
   const [editKnowledgePoint, setEditKnowledgePoint] = useState<string>("");
   const [isEditingOcr, setIsEditingOcr] = useState<boolean>(false);
   const [hasRecognized, setHasRecognized] = useState<boolean>(false);
@@ -92,6 +93,7 @@ export default function App() {
           ],
           originalCorrectAnswer: 'B',
           originalStudentAnswer: 'A (漏掉了二次项系数非零前提)',
+          originalAnalysis: '本题属于极其高频的“含字母二次项系数”经典陷阱题。很多同学仅凭公式定理顺手列出判别式 $\\Delta = (-2)^2 - 4(k-1) > 0 \\implies k < 2$，从而误选 A。然而由于一元二次方程中二次项最高次前含有变参限值，$k-1 \\neq 0 \\implies k \\neq 1$，因此必须复合求交，最终的取值范围为 $k < 2$ 且 $k \\neq 1$。',
           variants: [
             {
               id: 'v-1',
@@ -176,6 +178,7 @@ export default function App() {
     setEditOptions(sample.originalOptions);
     setEditCorrectAnswer(sample.originalCorrectAnswer);
     setEditStudentAnswer(sample.originalStudentAnswer);
+    setEditAnalysis(sample.originalAnalysis);
     setHasRecognized(true);
     setVariants([]); // 重新选择时清空之前的变式
   };
@@ -276,6 +279,7 @@ export default function App() {
       setEditOptions(data.originalOptions || []);
       setEditCorrectAnswer(data.originalCorrectAnswer || "");
       setEditStudentAnswer(data.originalStudentAnswer || "");
+      setEditAnalysis(data.originalAnalysis || "");
       setHasRecognized(true);
     } catch (err: any) {
       console.error(err);
@@ -287,6 +291,7 @@ export default function App() {
       setEditOptions(['A. $k < 2$', 'B. $k < 2$ 且 $k \\neq 1$']);
       setEditCorrectAnswer("B");
       setEditStudentAnswer("A");
+      setEditAnalysis("本题的核心考点是【一元二次方程根的判别式】加上二次项前方含字母必须非零的硬性限定条件。首先由判别式 $\\Delta > 0$ 算出范围为 $k < 2$；再次因为方程含有两个不相等的实数根，必须确保二次项系数 $k-1 \\neq 0 \\implies k \\neq 1$。复合求交即可得出正确答案 $k < 2$ 且 $k \\neq 1$。");
       setHasRecognized(true);
     } finally {
       clearInterval(timer);
@@ -350,6 +355,7 @@ export default function App() {
       originalOptions: editOptions,
       originalCorrectAnswer: editCorrectAnswer,
       originalStudentAnswer: editStudentAnswer,
+      originalAnalysis: editAnalysis,
       variants: variants, // 如果没有生成，则为空数组，在详情页也可以再次触发生成！
       createdAt: new Date().toISOString()
     };
@@ -759,6 +765,31 @@ export default function App() {
                               )}
                             </div>
                           </div>
+
+                          {/* 错题详细生动深度解析区 */}
+                          <div className="pt-4 border-t border-slate-100">
+                            <div className="flex items-center gap-1.5 mb-2">
+                              <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                              <p className="font-bold text-xs text-amber-950">名师原题深度解析 & 避坑指南</p>
+                            </div>
+                            {isEditingOcr ? (
+                              <textarea
+                                value={editAnalysis}
+                                onChange={(e) => setEditAnalysis(e.target.value)}
+                                rows={4}
+                                placeholder="请输入该错题的详细深度解析、出错逻辑分析，支持使用 LaTeX $包裹公式..."
+                                className="w-full text-xs font-serif bg-slate-50 border border-slate-200 rounded-lg p-3 focus:border-blue-500 focus:ring-0 focus:outline-none text-slate-800 leading-relaxed"
+                              />
+                            ) : (
+                              <div className="text-xs text-slate-800 bg-amber-50/40 p-3 rounded-lg border border-amber-100/60 leading-relaxed font-serif">
+                                {editAnalysis ? (
+                                  <MathText text={editAnalysis} />
+                                ) : (
+                                  <span className="text-slate-400 italic">尚未识别并补充本题的深度解析。点击上方「修缮或手动输入 OCR 数据」可一键手动补充！</span>
+                                )}
+                              </div>
+                            )}
+                          </div>
                         </div>
 
                         {/* 动作发起栏：举一反三 */}
@@ -1102,6 +1133,18 @@ export default function App() {
                                         </span>
                                       )}
                                     </div>
+
+                                    {record.originalAnalysis && (
+                                      <div className="mt-4 border-t border-slate-100 pt-3 space-y-1.5 text-left">
+                                        <div className="flex items-center gap-1.5 text-xs font-bold text-amber-800">
+                                          <Sparkles className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                                          <span>名师原题深度解析 & 避坑指南：</span>
+                                        </div>
+                                        <div className="text-xs text-slate-800 bg-amber-50/40 p-3 rounded-lg border border-amber-100/60 leading-relaxed font-serif">
+                                          <MathText text={record.originalAnalysis} />
+                                        </div>
+                                      </div>
+                                    )}
                                   </div>
                                 </div>
 
